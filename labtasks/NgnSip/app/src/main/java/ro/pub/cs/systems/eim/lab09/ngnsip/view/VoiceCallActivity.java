@@ -151,6 +151,24 @@ public class VoiceCallActivity extends AppCompatActivity {
                 // - compute the character code (0-9 for digits, 10 for '*', 11 for '#')
                 // - use the sendDTMF() method of the NgnAVSession instance
                 // - log the result using Logcat
+                int character = dtmfEditText.getText().toString().charAt(0);
+                switch(character) {
+                    case '*':
+                        character = 10;
+                        break;
+                    case '#':
+                        character = 11;
+                        break;
+                    default:
+                        if (character >= '0' && character <= '9') {
+                            character -= '0';
+                        }
+                }
+                if (!ngnAVSession.sendDTMF(character)) {
+                    Log.e(Constants.TAG, "Failed to send DTMF " + character);
+                } else {
+                    Log.d(Constants.TAG, "Succeeded to send DTMF " + character);
+                }
 
             }
         }
